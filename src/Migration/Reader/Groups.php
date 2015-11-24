@@ -45,7 +45,7 @@ class Groups
         }
 
         $xml = file_get_contents($xmlFile);
-        $document = $document = new \Magento\Framework\Config\Dom($xml, new \Magento\Framework\App\Arguments\ValidationState(\Magento\Framework\App\State::MODE_DEVELOPER));
+        $document = $document = new \Magento\Framework\Config\Dom($xml, new \Magento\Framework\App\Arguments\ValidationState(\Magento\Framework\App\State::MODE_DEFAULT));
 
         if (!$document->validate($this->getRootDir() .'etc/' . self::CONFIGURATION_SCHEMA)) {
             throw new Exception('XML file is invalid.');
