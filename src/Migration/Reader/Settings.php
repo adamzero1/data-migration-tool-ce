@@ -90,9 +90,14 @@ class Settings
         }
 
         $xml = file_get_contents($configFile);
-        $document = $document = new \Magento\Framework\Config\Dom($xml, new \Magento\Framework\App\Arguments\ValidationState(\Magento\Framework\App\State::MODE_DEFAULT));
+        $document = $document = new \Magento\Framework\Config\Dom($xml, new \Magento\Framework\App\Arguments\ValidationState(\Magento\Framework\App\State::MODE_DEVELOPER));
 
-        if (!$document->validate($rootDir .'etc/' . self::CONFIGURATION_SCHEMA)) {
+        $schemaFileName = $rootDir .'etc/' . self::CONFIGURATION_SCHEMA;
+        if (!$document->validate($schemaFileName)) {
+            $errors = $document->validateDomDocument($document->getDom(), $schemaFileName, $document::ERROR_FORMAT_DEFAULT);
+            foreach($errors as $error){
+                echo $error.PHP_EOL;
+            }
             throw new Exception('XML file is invalid.');
         }
 
